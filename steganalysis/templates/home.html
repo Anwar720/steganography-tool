@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Orbitron">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/static/style.css?{% now "U" %}" />
+  <title>Steganalysis</title>
+</head>
+<body>
+ <div class="container">
+   <h1 class="title">Steganalysis Tool </h1>
+   <div class="content">
+     <div class="steg-inputs">
+       <div class="options">
+         <h6>Image Options: </h6>
+         <div class="btns">
+           <span class="glider"></span>
+           <button class="img_btn">Detect</button>
+           <button class="url_btn">Hide</button>
+         </div>
+       </div>
+       <div class="inputs"> 
+
+<!--      form used for steganalysis   -->
+        <form class="img-input"  method="post" action="analyze-image" enctype='multipart/form-data'>
+          {% csrf_token %}
+          <input name="image" type="file" id="img-input" multiple accept="image/*" required>
+          <label for="img-input" class="img-label" required>
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+          </label>
+          <div class="selected-img">
+                <p></p>
+                <section class="reset-upload-btn">
+                  <i class="fa-solid fa-xmark"></i>
+                </section>
+          </div>
+          <button type="submit" class="submit-btn">Upload</button>
+        </form>
+        
+<!--    Form used for steganography       -->
+        <form class="url-input" method="post" action="hide-data" enctype='multipart/form-data'>
+          {% csrf_token %}
+          <input name="img" type="file" id="hide-img-input" multiple accept="image/*" required>
+          <label for="hide-img-input" class="img-label smaller" required>
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+          </label>
+          <div class="selected-img hide">
+                <p></p>
+                <section class="reset-upload-btn">
+                  <i class="fa-solid fa-xmark"></i>
+                </section>
+          </div>
+            <input name="message" type="text" placeholder="Enter message to hide..." required>
+            <button type="submit" class="submit-btn">Upload</button>
+        </form>
+      
+       </div>
+     </div>
+
+     <div class="steg-result">
+       {% block content %}
+       <h2>Output</h2>
+        {% if output %}
+          <div>Type: <i class="fa-regular fa-image"></i></div>
+          <div>Input: <span class="value">{{ input }}</span></div>
+       <div>Result: <br>
+         {%if output == 'hide'%}
+              <a href={% static  result  %} download="w3logo" value="download"><i class="fa-solid fa-download"></i>   Download Image</a>
+          </div>
+         {% else %}
+          <div class="result">Hidden Message:  <span class="message">{{ result }}</span> </div>
+          {% endif %}
+       {% endif %}
+     </div>
+     {% endblock %}
+   </div>
+ </div>
+<script src="static/script.js?{% now "U" %}"></script>
+</body>
+  
+</html>
