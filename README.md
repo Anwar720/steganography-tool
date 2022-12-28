@@ -4,12 +4,13 @@ This website can perform steganography to hide messages in images and also perfo
 
 ## Installing packages
 
-1.Install Python and Django 
-2.Install requirements
+1. Install Python and Django 
+
+2. Install requirements
 ```
    pip install -r requirements.txt
 ```
-2. Run 
+3. Run 
 ```
 python manage.py runserver
 ```
